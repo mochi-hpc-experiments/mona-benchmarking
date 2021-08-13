@@ -42,12 +42,12 @@ for MSG_SIZE in ${MONA_SEND_RECV_MSG_SIZES[@]}; do
         mona-send-recv-benchmark \
         -m mpi -s $MSG_SIZE -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mpi
 
-    print_log "Starting Send/Recv benchmark using MoNA with message size = ${MSG_SIZE} and progress thread"
-    srun -C haswell -N 2 -n 2 -c 2 -l --cpu_bind=cores \
-        mona-send-recv-benchmark \
-        -m mona -t $TRANSPORT -s $MSG_SIZE \
-        -r $MONA_RDMA_THRESHOLD -p \
-        -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona.p
+#    print_log "Starting Send/Recv benchmark using MoNA with message size = ${MSG_SIZE} and progress thread"
+#    srun -C haswell -N 2 -n 2 -c 2 -l --cpu_bind=cores \
+#        mona-send-recv-benchmark \
+#        -m mona -t $TRANSPORT -s $MSG_SIZE \
+#        -r $MONA_RDMA_THRESHOLD -p \
+#        -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona.p
 
     print_log "Starting Send/Recv benchmark using MoNA with message size = ${MSG_SIZE} without progress thread"
     srun -C haswell -N 2 -n 2 -c 1 -l --cpu_bind=cores \
@@ -56,22 +56,20 @@ for MSG_SIZE in ${MONA_SEND_RECV_MSG_SIZES[@]}; do
         -r $MONA_RDMA_THRESHOLD \
         -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona
 
-    print_log "Starting USend/URecv benchmark using MoNA with message size = ${MSG_SIZE} and progress thread"
-    srun -C haswell -N 2 -n 2 -c 2 -l --cpu_bind=cores \
-        mona-usend-urecv-benchmark \
-        -m mona -t $TRANSPORT -s $MSG_SIZE \
-        -r $MONA_RDMA_THRESHOLD -p \
-        -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona.up
+#    print_log "Starting USend/URecv benchmark using MoNA with message size = ${MSG_SIZE} and progress thread"
+#    srun -C haswell -N 2 -n 2 -c 2 -l --cpu_bind=cores \
+#        mona-usend-urecv-benchmark \
+#        -m mona -t $TRANSPORT -s $MSG_SIZE \
+#        -r $MONA_RDMA_THRESHOLD -p \
+#        -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona.up
 
-    print_log "Starting Send/Recv benchmark using MoNA with message size = ${MSG_SIZE} without progress thread"
-    srun -C haswell -N 2 -n 2 -c 1 -l --cpu_bind=cores \
-        mona-usend-urecv-benchmark \
-        -m mona -t $TRANSPORT -s $MSG_SIZE \
-        -r $MONA_RDMA_THRESHOLD \
-        -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona.u
+#    print_log "Starting Send/Recv benchmark using MoNA with message size = ${MSG_SIZE} without progress thread"
+#    srun -C haswell -N 2 -n 2 -c 1 -l --cpu_bind=cores \
+#        mona-usend-urecv-benchmark \
+#        -m mona -t $TRANSPORT -s $MSG_SIZE \
+#        -r $MONA_RDMA_THRESHOLD \
+#        -i $MONA_SEND_RECV_ITERATIONS >> $LOG.pt2pt.mona.u
 done
-
-exit 0
 
 # Broadcast benchmarks
 
