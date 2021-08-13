@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+import argparse
+import os.path
+
+def _read_logs(directory, algorithm):
+    if not os.path.isdir(directory):
+        raise RuntimeError('Could not find directory '+directory)
+    filenames = [directory+'/result.'+algorithm+'.'+m for m in ['mpi', 'mona']]
+    for f in filenames:
+        if not os.path.isfile(f):
+            raise RuntimeError('Could not find file '+f)
+    msg_sizes = []
+    for line in open(filenames[0]):
+        size = int(line.split()[-6])
+        msg_sizes.append(size)
+    mpi_results = []
+    for line in open(filenames[0]):
+        time = float(line.split()[-2])
+        mpi_results.append(time)
+    mona_results = []
+    for line in open(filenames[1]):
+        time = float(line.split()[-2])
+        mona_results.append(time)
+    return [msg_sizes, mpi_results, mona_results]
+
+
+def _print_csv_table(table):
+    msg_sizes = table[0]
+    mpi_times = table[1]
+    mona_times = table[2]
+    print('# size(bytes), mpi(sec), mona(sec)')
+    for size, mpi, mona in zip(msg_sizes, mpi_times, mona_times):
+        print('%d,%f,%f' % (size, mpi, mona))
+
+
+def _print_md_table(table):
+    msg_sizes = table[0]
+    mpi_times = table[1]
+    mona_times = table[2]
+    print('| size (bytes) | mpi (sec)    | mona (sec)   | degradation  |')
+    print('| ------------ | ------------ | ------------ | ------------ |')
+    for size, mpi, mona in zip(msg_sizes, mpi_times, mona_times):
+        s1 = ' ' * (12-len(str(size)))
+        s2 = ' ' * (12-len(str(mpi)))
+        s3 = ' ' * (12-len(str(mona)))
+        degradation = int(100*(mona-mpi)/mpi)
+        s4 = ' ' * (11-len(str(degradation)))
+        print('| %s%s | %s%s | %s%s | %s%s |' % (str(size), s1, str(mpi), s2, str(mona), s3, str(degradation)+'%', s4))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process the logs of MoNA experiments')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-c', '--csv', action='store_true', help='Produce CSV data')
+    group.add_argument('-m', '--md', action='store_true', help='Produce Markdown table')
+    parser.add_argument('directory', type=str, help='Directory containing the logs')
+    parser.add_argument('algorithm', type=str, help='Algorithm of interest')
+    ns = parser.parse_args()
+    table = _read_logs(ns.directory, ns.algorithm)
+    if ns.csv:
+        _print_csv_table(table)
+    elif ns.md:
+        _print_md_table(table)

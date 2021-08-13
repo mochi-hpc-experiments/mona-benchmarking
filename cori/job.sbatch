@@ -19,7 +19,7 @@ TRANSPORT=ofi+gni
 LOG_DIR=logs-$SLURM_JOB_ID
 mkdir $LOG_DIR
 
-LOG=$LOG_DIR/result.$SLURM_JOB_ID
+LOG=$LOG_DIR/result
 
 function print_log() {
     MSG=$1
