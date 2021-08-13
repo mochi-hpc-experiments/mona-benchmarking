@@ -1,0 +1,12 @@
+#!/bin/bash
+
+HERE=`dirname $0`
+ALGORITHMS=(pt2pt bcast allreduce gather allgather scatter)
+
+for algo in "${ALGORITHMS[@]}"
+do
+    echo "# Results for ${algo}"
+    echo ""
+    $HERE/parse-results --md $1 $algo
+    echo ""
+done
