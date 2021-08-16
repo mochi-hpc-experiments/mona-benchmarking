@@ -18,15 +18,16 @@ then install all the necessary software.
 # Running
 
 ```
-sbatch -N 32 job.sbatch
+qsub -n 128 ./job.qsub
 ```
 
 You can change the number of nodes on which to run the experiments.
-This number should be at least 2.
+This number should be at least 128, though the `job.qsub` file can
+be edited to use the debug-flat-quad queue instead and run on up to
+8 nodes in this queue.
 
-This command will submit a job that will produce a file named
-`benchmark-<jobid>.out` and a directory named `logs-<jobid>` containing
-the results.
+This command will submit a job that will produce a directory named
+`logs-<jobid>` containing the results.
 
 # Parsing results
 

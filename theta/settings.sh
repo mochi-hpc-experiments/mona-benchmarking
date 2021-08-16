@@ -1,0 +1,32 @@
+#!/bin/bash
+
+MONA_SOURCE_PATH=$HERE/src # where sources will be downloaded
+MONA_PREFIX_PATH=$HERE/sw  # where software will be installed
+
+MONA_SPACK_LOCATION=$MONA_PREFIX_PATH/spack # spack location
+MONA_SPACK_ENV=mona-env     # environment in which Mona is installed
+MONA_MOCHI_LOCATION=$MONA_PREFIX_PATH/mochi-spack-packages
+
+MONA_RDMA_THRESHOLD=-1
+# send/recv benchmark parameters
+MONA_SEND_RECV_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_SEND_RECV_ITERATIONS=5000
+MONA_SEND_RECV_EXTRA_OPTIONS=-n
+# broadcast benchmark parameters
+MONA_BCAST_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_BCAST_ITERATIONS=5000
+# allreduce benchmark parameters
+MONA_ALLREDUCE_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_ALLREDUCE_ITERATIONS=5000
+# reduce benchmark parameters
+MONA_REDUCE_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_REDUCE_ITERATIONS=5000
+# gather benchmark parameters
+MONA_GATHER_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_GATHER_ITERATIONS=50
+# allgather benchmark parameters
+MONA_ALLGATHER_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_ALLGATHER_ITERATIONS=50
+# scatter benchmark parameters
+MONA_SCATTER_MSG_SIZES=(8 128 2048 32768 524288)
+MONA_SCATTER_ITERATIONS=50
