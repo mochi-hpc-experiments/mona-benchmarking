@@ -75,6 +75,36 @@ for MSG_SIZE in ${MONA_BCAST_MSG_SIZES[@]}; do
         -m mona -t $TRANSPORT -s $MSG_SIZE -i $MONA_BCAST_ITERATIONS >> $LOG.bcast.mona
 done
 
+# Reduce benchmarks
+
+for MSG_SIZE in ${MONA_REDUCE_MSG_SIZES[@]}; do
+
+    print_log "Starting Reduce benchmark using MPI with message size = ${MSG_SIZE}"
+    srun -C haswell -N $NUM_NODES -n $NUM_PROCS -c 1 -l --cpu_bind=cores \
+        mona-reduce-benchmark \
+        -m mpi -s $MSG_SIZE -i $MONA_REDUCE_ITERATIONS >> $LOG.reduce.mpi
+
+    print_log "Starting Reduce benchmark using MoNA with message size = ${MSG_SIZE}"
+    srun -C haswell -N $NUM_NODES -n $NUM_PROCS -c 1 -l --cpu_bind=cores \
+        mona-reduce-benchmark \
+        -m mona -t $TRANSPORT -s $MSG_SIZE -i $MONA_REDUCE_ITERATIONS >> $LOG.reduce.mona
+done
+
+# Alltoall benchmarks
+
+for MSG_SIZE in ${MONA_ALLTOALL_MSG_SIZES[@]}; do
+
+    print_log "Starting Alltoall benchmark using MPI with message size = ${MSG_SIZE}"
+    srun -C haswell -N $NUM_NODES -n $NUM_PROCS -c 1 -l --cpu_bind=cores \
+        mona-alltoall-benchmark \
+        -m mpi -s $MSG_SIZE -i $MONA_ALLTOALL_ITERATIONS >> $LOG.alltoall.mpi
+
+    print_log "Starting Alltoall benchmark using MoNA with message size = ${MSG_SIZE}"
+    srun -C haswell -N $NUM_NODES -n $NUM_PROCS -c 1 -l --cpu_bind=cores \
+        mona-alltoall-benchmark \
+        -m mona -t $TRANSPORT -s $MSG_SIZE -i $MONA_ALLTOALL_ITERATIONS >> $LOG.alltoall.mona
+done
+
 # Allreduce benchmarks
 
 for MSG_SIZE in ${MONA_ALLREDUCE_MSG_SIZES[@]}; do
@@ -119,6 +149,8 @@ for MSG_SIZE in ${MONA_ALLGATHER_MSG_SIZES[@]}; do
         mona-allgather-benchmark \
         -m mona -t $TRANSPORT -s $MSG_SIZE -i $MONA_ALLGATHER_ITERATIONS >> $LOG.allgather.mona
 done
+
+# Scatter benchmarks
 
 for MSG_SIZE in ${MONA_SCATTER_MSG_SIZES[@]}; do
 

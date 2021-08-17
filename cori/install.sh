@@ -7,6 +7,8 @@ HERE=`realpath $HERE`
 echo $HERE
 source $HERE/settings.sh
 
+MPI_IMPL=cray-mpich
+
 echo "====> Loading modules"
 module swap PrgEnv-intel PrgEnv-gnu
 module swap gcc/8.3.0 gcc/9.3.0
@@ -29,6 +31,10 @@ do
         ;;
     --skip-mona)
         SKIP_MONA=1
+        shift
+        ;;
+    --with-openmpi)
+        MPI_IMPL=openmpi
         shift
         ;;
     *)
@@ -73,6 +79,8 @@ function install_mona {
     spack env activate $MONA_SPACK_ENV
     echo "====> Adding Mochi namespace"
     spack repo add --scope env:$MONA_SPACK_ENV $MONA_MOCHI_LOCATION
+    echo "====> Adding MPI implementation"
+    spack add ${MPI_IMPL}
     echo "====> Installing"
     spack install
     spack env deactivate
